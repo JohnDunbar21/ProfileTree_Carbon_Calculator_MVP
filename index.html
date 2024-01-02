@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Emissions Offset Calculator</title>
+  <link rel="stylesheet" href="stylesheet.css">
+</head>
+<body>
+  
+  <div class="container">
+    <div class="description">
+      <h1>Details</h1>
+      <p>This calculator offers an approximation to an organisation's sustainability through its carbon footprint.</p>
+      <p>Scope 1:<br><br>Refers to direct greenhouse gas emissions resulting from sources owned or controlled by an organisation. For example, a backup generator or gas heating in the office.
+
+        <br><br>Scope 2:<br><br>Refers to indirect greenhouse gas emissions resulting from the purchase of electricity for use by the organisation, i.e., the electricity received from the national grid.
+
+        <br><br>Scope 3:<br><br>Refers to greenhouse gas emissions that are influenced by an organisation but are largely outside of its control. For example, the fuel efficiency of employee vehicles.
+      </p>
+    </div>
+
+    <div class="calculator">
+      <div class="result-container">
+        <h1>Emissions Offset Calculator</h1>
+        <label for="num1">Scope 1 (kWh):</label>
+        <input type="number" id="num1" required>
+        <label for="num2">Scope 2 (kWh):</label>
+        <input type="number" id="num2" required>
+        <label for="num3">Scope 3 (kWh):</label>
+        <input type="number" id="num3" required>
+        <br><br>
+        <button onclick="calculateSum()">Calculate</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function calculateSum() {
+      // Get the input values
+      var num1 = parseFloat(document.getElementById("num1").value);
+      var num2 = parseFloat(document.getElementById("num2").value);
+      var num3 = parseFloat(document.getElementById("num3").value);
+
+      // Check if all inputs are valid numbers
+      if (isNaN(num1) || isNaN(num2) || isNaN(num3)) {
+        alert("Please enter valid numbers for all three fields.");
+        return;
+      }
+
+      // Check if all inputs are non-negative numbers
+      if (num1 < 0 || num2 < 0 || num3 < 0) {
+        alert("All inputs must be non-negative");
+        return;
+      }
+
+      // Calculate the emission factors
+      var sum = parseInt(((num1 * 2.615) + (num2 * 0.6) + (num3 * 0.325)) / 21);
+
+      // Create a comment on the value
+      var comment;
+
+      if (sum < 1000) {
+        comment = "You're doing great, keep this up!";
+      }
+      else if (sum > 1000 && sum < 5000) {
+        comment = "You're on your way to being a sustainable business. Keep taking measures to offset your carbon emissions!";
+      }
+      else {
+        comment = "You've got a long way to go before you are a sustainable business, but steady implementation of carbon-cutting measures will make you much more sustainable!";
+      }
+
+      // Create the result overlay
+      var resultOverlay = document.createElement("div");
+      resultOverlay.className = "result-overlay";
+      // Create the result container
+      var resultContainer = document.createElement("div");
+      resultContainer.className = "result";
+
+      // Create the close button
+      var closeButton = document.createElement("span");
+      closeButton.innerHTML = "&times;";
+      closeButton.className = "close-button";
+      closeButton.onclick = function() {
+        resultOverlay.remove();
+      };
+
+      // Add the sum result and close button to the result container
+      resultContainer.innerHTML = "<h2>The number of trees you need to plant to offset your current emissions is:</h2><p>" + sum + "</p><h2>" + comment + "</h2>";
+      resultContainer.appendChild(closeButton);
+
+      // Append the result container to the result overlay
+      resultOverlay.appendChild(resultContainer);
+
+      // Append the result overlay to the body
+      document.body.appendChild(resultOverlay);
+    }
+  </script>
+</body>
+</html>
+
+
+
+
+
